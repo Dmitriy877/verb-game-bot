@@ -39,6 +39,12 @@ def create_api_key(project_id: str, suffix: str) -> Key:
     return response
 
 
-env.read_env()
-project_id = env.str('PROJECT_ID')
-create_api_key(project_id, 'My_project')
+def main():
+
+    env.read_env()
+    project_id = env.str('PROJECT_ID')
+    create_api_key(project_id, 'My_project')
+
+
+if __name__ == '__main__':
+    main()
