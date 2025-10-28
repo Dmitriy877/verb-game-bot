@@ -44,7 +44,7 @@ def main():
     env.read_env()
     project_id = env.str('PROJECT_ID')
     create_api_key(project_id, 'My_project')
-
+    GOOGLE_APPLICATION_CREDENTIALS = env.str('GOOGLE_APPLICATION_CREDENTIALS')
 
 if __name__ == '__main__':
     main()
