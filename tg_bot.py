@@ -3,6 +3,7 @@ from environs import env
 from telegram import Update
 
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
+from dialogflow_bot import detect_intent_texts
 
 env.read_env()
 PROJECT_ID = env.str("Project_ID")
@@ -28,30 +29,6 @@ def bot_message(update: Update, context: CallbackContext) -> None:
         context.bot.send_message(chat_id=chat_id, text=answer)
     else:
         context.bot.send_message(chat_id=chat_id, text='Ничего не понял, но очень интересно!')
-
-
-def detect_intent_texts(project_id: str, session_id: int, texts: list, language_code: str) -> str:
-    """Returns the result of detect intent with texts as inputs.
-
-    Using the same `session_id` between requests allows continuation
-    of the conversation."""
-    from google.cloud import dialogflow
-
-    session_client = dialogflow.SessionsClient()
-
-    session = session_client.session_path(project_id, session_id)
-    print("Session path: {}\n".format(session))
-
-    for text in texts:
-        text_input = dialogflow.TextInput(text=text, language_code=language_code)
-
-        query_input = dialogflow.QueryInput(text=text_input)
-
-        response = session_client.detect_intent(
-            request={"session": session, "query_input": query_input}
-        )
-
-        return response.query_result.fulfillment_text
 
 
 def main():
