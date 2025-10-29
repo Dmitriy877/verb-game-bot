@@ -1,17 +1,17 @@
 import json
 
 from environs import env
-import requests
 
 env.read_env()
 PROJECT_ID = env.str("Project_ID")
 LANGUAGE_CODE = "en-US"
+TRAINING_PHRASES = env.str('TRAINING_PHRASES')
 
 
 def get_data_json_from_url(url: str) -> dict:
-    data = requests.get(url).content
-    data_json = json.loads(data)
-    return data_json
+    with open(url, "r", encoding="UTF-8") as my_file:
+        file_contents = my_file.read()
+    return json.loads(file_contents)
 
 
 def create_intent(project_id: str, display_name: str, training_phrases_parts: list, message_texts: list) -> None:
@@ -52,8 +52,7 @@ def train_bot(data: dict) -> None:
 
 def main():
 
-    data_url = 'https://dvmn.org/media/filer_public/a7/db/a7db66c0-1259-4dac-9726-2d1fa9c44f20/questions.json'
-    data = get_data_json_from_url(data_url)
+    data = get_data_json_from_url(TRAINING_PHRASES)
     train_bot(data)
 
 
