@@ -33,14 +33,12 @@ def echo(event, vk_api):
     try:
         answer = detect_intent_texts(PROJECT_ID, session_id, text, LANGUAGE_CODE)
         if answer:
-            raise Exception
             vk_api.messages.send(
                 user_id=event.user_id,
                 message=answer,
                 random_id=random.randint(1, 1000)
             )
         else:
-            raise Exception
             vk_api.messages.send(
                 user_id=event.user_id,
                 message='Я Вас не понял, сейчас позову оператора',
