@@ -1,4 +1,11 @@
 # Byte-compiled / optimized / DLL files
+*.log
+*.1
+*.2
+tg_bot_log.log.1
+tg_bot_log.log.2
+vk_bot_log.log.1
+vk_bot_log.log.2
 __pycache__/
 *.py[cod]
 *$py.class
