@@ -11,6 +11,7 @@ from dialogflow_bot import detect_intent_texts
 env.read_env()
 PROJECT_ID = env.str("Project_ID")
 LANGUAGE_CODE = "en-US"
+logger = logging.getLogger('tg_bot_loger')
 
 
 class TelegramLogsHandler(logging.Handler):
@@ -38,43 +39,37 @@ def bot_message(update: Update, context: CallbackContext) -> None:
     """Echo the user message."""
     text = [update.message.text]
     chat_id = update.effective_chat.id
-    answer = detect_intent_texts(PROJECT_ID, chat_id, text, LANGUAGE_CODE)
-    if answer:
-        context.bot.send_message(chat_id=chat_id, text=answer)
-    else:
-        context.bot.send_message(chat_id=chat_id, text='Ничего не понял, но очень интересно!')
+    try:
+        answer = detect_intent_texts(PROJECT_ID, chat_id, text, LANGUAGE_CODE)
+        if answer:
+            context.bot.send_message(chat_id=chat_id, text=answer)
+        else:
+            context.bot.send_message(chat_id=chat_id, text='Ничего не понял, но очень интересно!')
+    except Exception as error:
+        logger.exception(f'TG Bot Has been crashed with error {error}')
 
 
 def main():
 
     env.read_env()
     telegram_bot_token = env.str('TELEGRAM_BOT_TOKEN')
+    log_bot = telegram.Bot(token=telegram_bot_token)
     chat_id = env.str('TELEGRAMM_CHAT_ID')
 
     updater = Updater(token=telegram_bot_token)
-    log_bot = telegram.Bot(token=telegram_bot_token)
-
     dispatcher = updater.dispatcher
-    logger = logging.getLogger('tg_bot_loger')
-    logger.setLevel(logging.INFO)
-    handler = RotatingFileHandler('tg_bot_log.log', maxBytes=200, backupCount=2)
-    logger.addHandler(handler)
-    logger.addHandler(TelegramLogsHandler(log_bot, chat_id))
 
     start_handler = CommandHandler('start', start)
     echo_handler = MessageHandler(Filters.text & (~Filters.command), bot_message)
 
     dispatcher.add_handler(start_handler)
     dispatcher.add_handler(echo_handler)
-    while True:
-        try:
-            updater.start_polling()
-            logger.info('TG Bot is working')
-        except Exception as e:
-            logger.error('TG Bot has been crashed')
-            logger.error(e, exc_info=True)
-            continue
 
+    logger.setLevel(logging.INFO)
+    logger.addHandler(TelegramLogsHandler(log_bot, chat_id))
+    logger.addHandler(RotatingFileHandler('tg_bot_log.log', maxBytes=200, backupCount=2))
+
+    updater.start_polling()
 
 
 if __name__ == '__main__':
