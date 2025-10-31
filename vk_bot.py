@@ -9,11 +9,6 @@ from dialogflow_bot import detect_intent_texts
 import telegram 
 
 
-env.read_env()
-PROJECT_ID = env.str("PROJECT_ID")
-LANGUAGE_CODE = env.str("LANGUAGE_CODE")
-
-
 class TelegramLogsHandler(logging.Handler):
     def __init__(self, log_bot, chat_id):
         super().__init__()
@@ -25,19 +20,20 @@ class TelegramLogsHandler(logging.Handler):
         self.log_bot.send_message(chat_id=self.chat_id, text=log_entry)
 
 
-def send_message(event, vk_api):
-    session_id = f'vk-{event.user_id}'
+def send_message(event, vk_api, PROJECT_ID, LANGUAGE_CODE):
+    dialogflow_chat_id = f'vk-{event.user_id}'
+    chat_id = event.user_id
     text = [event.text]
-    answer = detect_intent_texts(PROJECT_ID, session_id, text, LANGUAGE_CODE)
+    answer = detect_intent_texts(PROJECT_ID, dialogflow_chat_id, text, LANGUAGE_CODE)
     if answer:
         vk_api.messages.send(
-            user_id=event.user_id,
+            user_id=chat_id,
             message=answer,
             random_id=random.randint(1, 1000)
         )
     else:
         vk_api.messages.send(
-            user_id=event.user_id,
+            user_id=chat_id,
             message='Я Вас не понял, сейчас позову оператора',
             random_id=random.randint(1, 1000)
         )
@@ -45,6 +41,9 @@ def send_message(event, vk_api):
 
 def main():
     env.read_env()
+    env.read_env()
+    PROJECT_ID = env.str("PROJECT_ID")
+    LANGUAGE_CODE = env.str("LANGUAGE_CODE")
     telegram_bot_token = env.str('TELEGRAM_BOT_TOKEN')
     chat_id = env.str('TELEGRAMM_CHAT_ID')
     VK_API_KEY = env.str('VK_API_KEY')
@@ -62,7 +61,7 @@ def main():
     try:
         for event in longpoll.listen():
             if event.type == VkEventType.MESSAGE_NEW and event.to_me:
-                send_message(event, vk_api)
+                send_message(event, vk_api, PROJECT_ID, LANGUAGE_CODE)
     except Exception as error:
         logger.exception(f'VK Bot Has been crashed with error {error}')
 
