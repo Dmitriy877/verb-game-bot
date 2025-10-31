@@ -25,7 +25,7 @@ class TelegramLogsHandler(logging.Handler):
         self.log_bot.send_message(chat_id=self.chat_id, text=log_entry)
 
 
-def echo(event, vk_api):
+def send_message(event, vk_api):
     session_id = event.user_id
     text = [event.text]
     answer = detect_intent_texts(PROJECT_ID, session_id, text, LANGUAGE_CODE)
@@ -62,7 +62,7 @@ def main():
     try:
         for event in longpoll.listen():
             if event.type == VkEventType.MESSAGE_NEW and event.to_me:
-                echo(event, vk_api)
+                send_message(event, vk_api)
     except Exception as error:
         logger.exception(f'VK Bot Has been crashed with error {error}')
 
