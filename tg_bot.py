@@ -9,7 +9,7 @@ from dialogflow_bot import detect_intent_texts
 
 
 env.read_env()
-PROJECT_ID = env.str("Project_ID")
+PROJECT_ID = env.str("PROJECT_ID")
 LANGUAGE_CODE = "en-US"
 logger = logging.getLogger('tg_bot_loger')
 

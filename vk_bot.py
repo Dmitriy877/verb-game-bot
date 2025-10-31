@@ -10,7 +10,7 @@ import telegram
 
 
 env.read_env()
-PROJECT_ID = env.str("Project_ID")
+PROJECT_ID = env.str("PROJECT_ID")
 LANGUAGE_CODE = "en-US"
 VK_API_KEY = env.str('VK_API_KEY')
 logger = logging.getLogger('vk_bot_loger')

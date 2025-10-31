@@ -39,7 +39,7 @@ def create_intent(project_id: str, display_name: str, training_phrases_parts: li
 def main():
 
     env.read_env()
-    PROJECT_ID = env.str("Project_ID")
+    PROJECT_ID = env.str("PROJECT_ID")
     TRAINING_PHRASES = env.str('TRAINING_PHRASES')
 
     data = get_json_from_url(TRAINING_PHRASES)
