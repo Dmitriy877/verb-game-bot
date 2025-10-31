@@ -1,22 +1,16 @@
 import json
 
 from environs import env
-
-env.read_env()
-PROJECT_ID = env.str("Project_ID")
-LANGUAGE_CODE = "en-US"
-TRAINING_PHRASES = env.str('TRAINING_PHRASES')
+from google.cloud import dialogflow
 
 
-def get_data_json_from_url(url: str) -> dict:
+def get_json_from_url(url: str) -> dict:
     with open(url, "r", encoding="UTF-8") as my_file:
         file_contents = my_file.read()
     return json.loads(file_contents)
 
 
-def create_intent(project_id: str, display_name: str, training_phrases_parts: list, message_texts: list) -> None:
-    """Create an intent of the given intent type."""
-    from google.cloud import dialogflow
+def create_intent(project_id: str, display_name: str, training_phrases_parts: list, message_texts: list) -> str:
 
     intents_client = dialogflow.IntentsClient()
 
@@ -39,21 +33,19 @@ def create_intent(project_id: str, display_name: str, training_phrases_parts: li
         request={"parent": parent, "intent": intent}
     )
 
-    print("Intent created: {}".format(response))
-
-
-def train_bot(data: dict) -> None:
-    for intent in data:
-        name = intent
-        questions = data[intent]['questions']
-        answer = [data[intent]['answer']]
-        create_intent(PROJECT_ID, name, questions, answer)
+    return ("Intent created: {}".format(response))
 
 
 def main():
 
-    data = get_data_json_from_url(TRAINING_PHRASES)
-    train_bot(data)
+    env.read_env()
+    PROJECT_ID = env.str("Project_ID")
+    TRAINING_PHRASES = env.str('TRAINING_PHRASES')
+
+    data = get_json_from_url(TRAINING_PHRASES)
+    for intent in data:
+        response = create_intent(PROJECT_ID, intent, data[intent]['questions'], [data[intent]['answer']])
+        print(f'Intent Created{response}')
 
 
 if __name__ == '__main__':

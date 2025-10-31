@@ -42,9 +42,11 @@ def create_api_key(project_id: str, suffix: str) -> Key:
 def main():
 
     env.read_env()
-    project_id = env.str('PROJECT_ID')
-    create_api_key(project_id, 'My_project')
     GOOGLE_APPLICATION_CREDENTIALS = env.str('GOOGLE_APPLICATION_CREDENTIALS')
+    project_id = env.str('PROJECT_ID')
+    response = create_api_key(project_id, 'My_project')
+    print(f"Successfully created an API key: {response.name}")
+
 
 if __name__ == '__main__':
     main()
