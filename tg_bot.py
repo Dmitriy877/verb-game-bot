@@ -37,7 +37,7 @@ def help_command(update: Update, context: CallbackContext) -> None:
 def send_message(update: Update, context: CallbackContext) -> None:
     """Echo the user message."""
     text = [update.message.text]
-    chat_id = update.effective_chat.id
+    chat_id = f'tg-{update.effective_chat.id}'
 
     answer = detect_intent_texts(PROJECT_ID, chat_id, text, LANGUAGE_CODE)
     if answer:

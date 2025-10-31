@@ -26,7 +26,7 @@ class TelegramLogsHandler(logging.Handler):
 
 
 def send_message(event, vk_api):
-    session_id = event.user_id
+    session_id = f'vk-{event.user_id}'
     text = [event.text]
     answer = detect_intent_texts(PROJECT_ID, session_id, text, LANGUAGE_CODE)
     if answer:
