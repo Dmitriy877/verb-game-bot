@@ -34,7 +34,7 @@ def help_command(update: Update, context: CallbackContext) -> None:
     update.message.reply_text('Help!')
 
 
-def bot_message(update: Update, context: CallbackContext) -> None:
+def send_message(update: Update, context: CallbackContext) -> None:
     """Echo the user message."""
     text = [update.message.text]
     chat_id = update.effective_chat.id
@@ -62,7 +62,7 @@ def main():
     dispatcher = updater.dispatcher
 
     start_handler = CommandHandler('start', start)
-    echo_handler = MessageHandler(Filters.text & (~Filters.command), bot_message)
+    echo_handler = MessageHandler(Filters.text & (~Filters.command), send_message)
 
     dispatcher.add_handler(start_handler)
     dispatcher.add_handler(echo_handler)
