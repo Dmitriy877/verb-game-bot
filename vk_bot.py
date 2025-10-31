@@ -11,7 +11,7 @@ import telegram
 
 env.read_env()
 PROJECT_ID = env.str("PROJECT_ID")
-LANGUAGE_CODE = "en-US"
+LANGUAGE_CODE = env.str("LANGUAGE_CODE")
 
 
 class TelegramLogsHandler(logging.Handler):
