@@ -30,7 +30,6 @@ def create_api_key(project_id: str, suffix: str) -> Key:
 
     response = client.create_key(request=request).result()
 
-    print(f"Successfully created an API key: {response.name}")
     return response
 
 
@@ -38,8 +37,8 @@ def main():
 
     env.read_env()
     GOOGLE_APPLICATION_CREDENTIALS = env.str('GOOGLE_APPLICATION_CREDENTIALS')
-    project_id = env.str('PROJECT_ID')
     dialogflow_project = env.str('DIALOGFLOW_PROJECT_NAME')
+    project_id = env.str('PROJECT_ID')
     response = create_api_key(project_id, 'My_project')
     print(f"Successfully created an API key: {response.name}")
 
