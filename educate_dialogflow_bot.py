@@ -38,12 +38,12 @@ def create_intent(project_id: str, display_name: str, training_phrases_parts: li
 def main():
 
     env.read_env()
-    PROJECT_ID = env.str("PROJECT_ID")
-    TRAINING_PHRASES = env.str('TRAINING_PHRASES')
+    project_id = env.str("PROJECT_ID")
+    training_phrases = env.str('TRAINING_PHRASES')
 
-    data = get_json_from_url(TRAINING_PHRASES)
+    data = get_json_from_url(training_phrases)
     for intent in data:
-        response = create_intent(PROJECT_ID, intent, data[intent]['questions'], [data[intent]['answer']])
+        response = create_intent(project_id, intent, data[intent]['questions'], [data[intent]['answer']])
         print(f'Intent Created{response}')
 
 

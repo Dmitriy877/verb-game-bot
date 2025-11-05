@@ -30,13 +30,13 @@ def help_command(update: Update, context: CallbackContext) -> None:
     update.message.reply_text('Help!')
 
 
-def send_message(update: Update, context: CallbackContext, LANGUAGE_CODE, PROJECT_ID) -> None:
+def send_message(update: Update, context: CallbackContext, language_code, project_id) -> None:
     """Echo the user message."""
     text = [update.message.text]
     dialogflow_chat_id = f'tg-{update.effective_chat.id}'
     chat_id = update.effective_chat.id
 
-    answer = detect_intent_texts(PROJECT_ID, dialogflow_chat_id, text, LANGUAGE_CODE)
+    answer = detect_intent_texts(project_id, dialogflow_chat_id, text, language_code)
     if answer:
         context.bot.send_message(chat_id=chat_id, text=answer)
     else:
@@ -46,11 +46,11 @@ def send_message(update: Update, context: CallbackContext, LANGUAGE_CODE, PROJEC
 def main():
 
     env.read_env()
-    PROJECT_ID = env.str("PROJECT_ID")
-    LANGUAGE_CODE = env.str("LANGUAGE_CODE")
+    project_id = env.str("PROJECT_ID")
+    language_code = env.str("LANGUAGE_CODE")
     telegram_bot_token = env.str('TELEGRAM_BOT_TOKEN')
     chat_id = env.str('TELEGRAMM_CHAT_ID')
-    send_message_with_arguments = partial(send_message, LANGUAGE_CODE=LANGUAGE_CODE, PROJECT_ID=PROJECT_ID)
+    send_message_with_arguments = partial(send_message, language_code=language_code, project_id=project_id)
 
     log_bot = telegram.Bot(token=telegram_bot_token)
     logger = logging.getLogger('tg_bot_loger')
