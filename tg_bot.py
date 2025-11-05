@@ -25,9 +25,9 @@ def start(update: Update, context: CallbackContext) -> None:
     context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
 
 
-def help_command(update: Update, context: CallbackContext) -> None:
+def send_help_message(update: Update, context: CallbackContext) -> None:
     """Send a message when the command /help is issued."""
-    update.message.reply_text('Help!')
+    update.message.reply_text('Бот для общения, если бот не понимает, о чем его просят, он сообщит об этом')
 
 
 def send_message(update: Update, context: CallbackContext, language_code, project_id) -> None:
@@ -62,10 +62,12 @@ def main():
     dispatcher = updater.dispatcher
 
     start_handler = CommandHandler('start', start)
+    help_handler = CommandHandler('help', send_help_message)
     echo_handler = MessageHandler(Filters.text & (~Filters.command), send_message_with_arguments)
 
     dispatcher.add_handler(start_handler)
     dispatcher.add_handler(echo_handler)
+    dispatcher.add_handler(help_handler)
 
     try:
         updater.start_polling()
