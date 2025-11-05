@@ -32,7 +32,7 @@ def create_intent(project_id: str, display_name: str, training_phrases_parts: li
         request={"parent": parent, "intent": intent}
     )
 
-    return f"Intent created: {response}"
+    return response
 
 
 def main():
