@@ -6,7 +6,7 @@ import vk_api as vk
 from vk_api.longpoll import VkLongPoll, VkEventType
 from environs import env
 from dialogflow_bot import detect_intent_texts
-import telegram 
+import telegram
 
 
 class TelegramLogsHandler(logging.Handler):
@@ -42,8 +42,8 @@ def send_message(event, vk_api, project_id, language_code):
 def main():
     env.read_env()
     env.read_env()
-    project_id = env.str("PROJECT_ID")
-    language_code = env.str("LANGUAGE_CODE")
+    project_id = env.str('PROJECT_ID')
+    language_code = env.str('LANGUAGE_CODE')
     telegram_bot_token = env.str('TELEGRAM_BOT_TOKEN')
     chat_id = env.str('TELEGRAMM_CHAT_ID')
     vk_api_key = env.str('VK_API_KEY')

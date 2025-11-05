@@ -3,7 +3,7 @@ import logging
 from functools import partial
 from logging.handlers import RotatingFileHandler
 from environs import env
-import telegram 
+import telegram
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 from dialogflow_bot import detect_intent_texts
@@ -46,8 +46,8 @@ def send_message(update: Update, context: CallbackContext, language_code, projec
 def main():
 
     env.read_env()
-    project_id = env.str("PROJECT_ID")
-    language_code = env.str("LANGUAGE_CODE")
+    project_id = env.str('PROJECT_ID')
+    language_code = env.str('LANGUAGE_CODE')
     telegram_bot_token = env.str('TELEGRAM_BOT_TOKEN')
     chat_id = env.str('TELEGRAMM_CHAT_ID')
     send_message_with_arguments = partial(send_message, language_code=language_code, project_id=project_id)

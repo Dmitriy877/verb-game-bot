@@ -17,7 +17,7 @@ def detect_intent_texts(project_id: str, session_id: int, texts: list, language_
         query_input = dialogflow.QueryInput(text=text_input)
 
         response = session_client.detect_intent(
-            request={"session": session, "query_input": query_input}
+            request={'session': session, 'query_input': query_input}
         )
 
         return response.query_result.fulfillment_text

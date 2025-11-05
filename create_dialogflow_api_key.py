@@ -22,10 +22,10 @@ def create_api_key(project_id: str, suffix: str) -> Key:
     client = api_keys_v2.ApiKeysClient()
 
     key = api_keys_v2.Key()
-    key.display_name = f"My first API key - {suffix}"
+    key.display_name = f'My first API key - {suffix}'
 
     request = api_keys_v2.CreateKeyRequest()
-    request.parent = f"projects/{project_id}/locations/global"
+    request.parent = f'projects/{project_id}/locations/global'
     request.key = key
 
     response = client.create_key(request=request).result()
@@ -40,7 +40,7 @@ def main():
     dialogflow_project = env.str('DIALOGFLOW_PROJECT_NAME')
     project_id = env.str('PROJECT_ID')
     response = create_api_key(project_id, 'My_project')
-    print(f"Successfully created an API key: {response.name}")
+    print(f'Successfully created an API key: {response.name}')
 
 
 if __name__ == '__main__':

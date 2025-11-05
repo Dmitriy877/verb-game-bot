@@ -5,7 +5,7 @@ from google.cloud import dialogflow
 
 
 def get_json_from_url(url: str) -> dict:
-    with open(url, "r", encoding="UTF-8") as my_file:
+    with open(url, 'r', encoding='UTF-8') as my_file:
         file_contents = my_file.read()
     return json.loads(file_contents)
 
@@ -29,7 +29,7 @@ def create_intent(project_id: str, display_name: str, training_phrases_parts: li
     )
 
     response = intents_client.create_intent(
-        request={"parent": parent, "intent": intent}
+        request={'parent': parent, 'intent': intent}
     )
 
     return response
@@ -38,7 +38,7 @@ def create_intent(project_id: str, display_name: str, training_phrases_parts: li
 def main():
 
     env.read_env()
-    project_id = env.str("PROJECT_ID")
+    project_id = env.str('PROJECT_ID')
     training_phrases_filename = env.str('TRAINING_PHRASES')
 
     data = get_json_from_url(training_phrases_filename)
